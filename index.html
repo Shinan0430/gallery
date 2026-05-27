@@ -10,75 +10,101 @@
   :root{--bg:#0d0d0d;--surface:#161616;--border:#2a2a2a;--accent:#e8d5b0;--accent2:#c4a97d;--text:#f0ebe0;--muted:#666;--danger:#c0392b;}
   *{box-sizing:border-box;margin:0;padding:0;}
   body{background:var(--bg);color:var(--text);font-family:'Shippori Mincho',serif;min-height:100vh;}
-  header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;}
-  .logo{font-size:1.4rem;font-weight:800;letter-spacing:.15em;color:var(--accent);}
-  .header-right{display:flex;align-items:center;gap:12px;}
-  #adminBadge{display:none;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.12em;color:var(--accent2);border:1px solid var(--accent2);padding:4px 10px;border-radius:2px;}
-  .btn{font-family:'DM Mono',monospace;font-size:.75rem;letter-spacing:.1em;padding:8px 18px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;border-radius:2px;}
+  header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;}
+  .logo{font-size:1.3rem;font-weight:800;letter-spacing:.15em;color:var(--accent);}
+  .header-right{display:flex;align-items:center;gap:10px;}
+  #adminBadge{display:none;font-family:'DM Mono',monospace;font-size:.65rem;color:var(--accent2);border:1px solid var(--accent2);padding:3px 8px;border-radius:2px;}
+  .btn{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.08em;padding:8px 14px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;border-radius:4px;}
   .btn:hover{border-color:var(--accent2);color:var(--accent);}
   .btn:disabled{opacity:.4;cursor:not-allowed;}
   .btn.primary{background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:600;}
   .btn.primary:hover{background:var(--accent2);border-color:var(--accent2);}
   .btn.danger{border-color:#5a2020;color:#e07070;}
   .btn.danger:hover{border-color:var(--danger);background:rgba(192,57,43,.15);}
-  main{padding:24px;}
-  .artist-tabs{display:flex;align-items:center;border-bottom:1px solid var(--border);margin-bottom:24px;overflow-x:auto;scrollbar-width:none;}
+
+  /* モード切り替え */
+  .mode-switch{display:flex;gap:0;border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+  .mode-btn{font-family:'DM Mono',monospace;font-size:.7rem;padding:7px 14px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;}
+  .mode-btn.active{background:var(--accent);color:var(--bg);font-weight:600;}
+
+  main{padding:16px 20px;}
+  .artist-tabs{display:flex;align-items:center;border-bottom:1px solid var(--border);margin-bottom:20px;overflow-x:auto;scrollbar-width:none;}
   .artist-tabs::-webkit-scrollbar{display:none;}
-  .tab{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.12em;padding:12px 18px;border:none;background:transparent;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;text-transform:uppercase;}
+  .tab{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.1em;padding:10px 16px;border:none;background:transparent;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;text-transform:uppercase;}
   .tab:hover{color:var(--accent);}
   .tab.active{color:var(--accent);border-bottom-color:var(--accent2);}
-  #gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:2px;}
+
+  /* 画像グリッド */
+  #gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:2px;}
   .card{position:relative;aspect-ratio:1;overflow:hidden;cursor:pointer;background:var(--surface);}
-  .card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease,filter .5s ease;}
+  .card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s,filter .5s;}
   .card:hover img,.card:active img{transform:scale(1.04);filter:brightness(.55);}
   .card-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:10px;opacity:0;transition:opacity .3s;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,transparent 55%);}
   .card:hover .card-overlay,.card:active .card-overlay{opacity:1;}
-  .card-date{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--accent2);letter-spacing:.08em;}
-  .card-artist{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.1em;margin-top:2px;}
+  .card-date{font-family:'DM Mono',monospace;font-size:.56rem;color:var(--accent2);}
+  .card-artist{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted);margin-top:2px;}
   .admin-controls{display:none;position:absolute;top:6px;right:6px;}
   .is-admin .card:hover .admin-controls,.is-admin .card:active .admin-controls{display:flex;}
   .icon-btn{width:28px;height:28px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;backdrop-filter:blur(8px);}
   .icon-btn.del{background:rgba(192,57,43,.3);color:#e07070;}
-  .empty-state{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--muted);font-family:'DM Mono',monospace;font-size:.8rem;}
-  .pagination{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:32px;font-family:'DM Mono',monospace;font-size:.75rem;color:var(--muted);}
+
+  /* テキスト一覧 */
+  #textList{display:none;flex-direction:column;gap:2px;}
+  .text-card{background:var(--surface);padding:16px 18px;cursor:pointer;transition:background .2s;border-left:2px solid transparent;}
+  .text-card:hover,.text-card:active{background:#1e1e1e;border-left-color:var(--accent2);}
+  .text-card-title{font-size:1rem;color:var(--text);margin-bottom:4px;}
+  .text-card-meta{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);}
+  .text-card-admin{float:right;background:none;border:none;color:#555;cursor:pointer;font-size:.85rem;padding:0 4px;}
+  .text-card-admin:hover{color:#e07070;}
+
+  .empty-state{text-align:center;padding:80px 20px;color:var(--muted);font-family:'DM Mono',monospace;font-size:.8rem;}
+  #gallery .empty-state{grid-column:1/-1;}
+
+  .pagination{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:28px;font-family:'DM Mono',monospace;font-size:.75rem;color:var(--muted);}
   .pagination button{background:none;border:1px solid var(--border);color:var(--muted);width:36px;height:36px;border-radius:2px;cursor:pointer;font-size:1rem;}
   .pagination button:disabled{opacity:.3;}
 
-  /* モーダル */
+  /* モーダル共通 */
   .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:200;align-items:flex-end;justify-content:center;}
   .modal-bg.open{display:flex;}
-  .modal{background:var(--surface);border-top:1px solid var(--border);border-radius:12px 12px 0 0;padding:28px 24px 40px;width:100%;max-width:560px;position:relative;animation:slideUp .25s ease;max-height:92vh;overflow-y:auto;}
+  .modal{background:var(--surface);border-top:1px solid var(--border);border-radius:12px 12px 0 0;padding:24px 20px 40px;width:100%;max-width:560px;position:relative;animation:slideUp .25s ease;max-height:92vh;overflow-y:auto;}
   @keyframes slideUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
-  .modal-close{position:absolute;top:14px;right:18px;background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;padding:4px 8px;}
-  .modal h2{font-size:1rem;font-weight:600;margin-bottom:24px;color:var(--accent);}
-  .field{margin-bottom:18px;}
-  .field label{display:block;font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
-  .field input[type=text],.field input[type=password]{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:14px 16px;font-size:16px;border-radius:6px;outline:none;-webkit-appearance:none;appearance:none;}
+  .modal-close{position:absolute;top:12px;right:16px;background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;padding:4px 8px;}
+  .modal h2{font-size:1rem;font-weight:600;margin-bottom:20px;color:var(--accent);}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
+  .field input[type=text],.field input[type=password]{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:14px 16px;font-size:16px;border-radius:6px;outline:none;-webkit-appearance:none;}
   .field input:focus{border-color:var(--accent2);}
-  .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;}
+  .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;}
 
-  /* 詳細モーダル */
-  #detailModal .modal{border-radius:12px 12px 0 0;padding:0;overflow:hidden;max-height:92vh;display:flex;flex-direction:column;}
+  /* 画像詳細 */
+  #detailModal .modal{padding:0;overflow:hidden;max-height:92vh;display:flex;flex-direction:column;}
   #detailImg{width:100%;max-height:60vh;object-fit:contain;display:block;background:#111;}
-  .detail-body{padding:20px 24px 32px;flex-shrink:0;}
-  .detail-meta{display:flex;gap:20px;flex-wrap:wrap;}
-  .meta-label{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-bottom:3px;}
-  .meta-value{font-size:.85rem;color:var(--accent);font-family:'DM Mono',monospace;}
-  .detail-actions{display:flex;gap:10px;margin-top:16px;}
+  .detail-body{padding:18px 20px 32px;flex-shrink:0;}
+  .detail-meta{display:flex;gap:18px;flex-wrap:wrap;}
+  .meta-label{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-bottom:3px;}
+  .meta-value{font-size:.82rem;color:var(--accent);font-family:'DM Mono',monospace;}
+  .detail-actions{display:flex;gap:10px;margin-top:14px;}
+
+  /* テキスト詳細 */
+  #textModal .modal{max-height:88vh;}
+  #textModal .modal h2{font-size:1.1rem;color:var(--accent);border-bottom:1px solid var(--border);padding-bottom:12px;}
+  #textContent{white-space:pre-wrap;line-height:1.9;font-size:.95rem;color:var(--text);margin-top:16px;font-family:'Shippori Mincho',serif;}
+  .text-meta-row{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);margin-top:4px;}
 
   /* アップロード */
-  .upload-area{border:2px dashed var(--border);border-radius:8px;padding:24px;text-align:center;cursor:pointer;margin-bottom:16px;}
+  .upload-area{border:2px dashed var(--border);border-radius:8px;padding:22px;text-align:center;cursor:pointer;margin-bottom:14px;}
   .upload-area input[type=file]{display:none;}
-  .upload-area .up-label{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--muted);}
-  .upload-area .up-sub{font-family:'DM Mono',monospace;font-size:.6rem;color:#444;margin-top:6px;}
-  .progress-wrap{margin-top:12px;display:none;}
+  .up-label{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);}
+  .up-sub{font-family:'DM Mono',monospace;font-size:.58rem;color:#444;margin-top:5px;}
+  .progress-wrap{margin-top:10px;display:none;}
   .progress-bar-bg{background:var(--border);border-radius:2px;height:4px;overflow:hidden;}
   .progress-bar-fill{height:100%;background:var(--accent2);transition:width .2s;width:0%;}
-  .progress-text{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);margin-top:6px;text-align:center;}
+  .progress-text{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);margin-top:5px;text-align:center;}
 
   #pwError{color:#e07070;font-family:'DM Mono',monospace;font-size:.7rem;margin-top:6px;display:none;}
-  #addBtn{display:none;position:fixed;bottom:32px;right:24px;z-index:150;padding:14px 22px;font-size:.8rem;}
-  #saveStatus{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--accent2);display:none;}
+  #addBtn{display:none;position:fixed;bottom:28px;right:20px;z-index:150;padding:13px 20px;}
+  #saveStatus{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--accent2);display:none;}
 </style>
 </head>
 <body>
@@ -87,6 +113,10 @@
   <div class="logo">GALLERY</div>
   <div class="header-right">
     <span id="saveStatus">処理中...</span>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="modeImg" onclick="switchMode('image')">画像</button>
+      <button class="mode-btn" id="modeTxt" onclick="switchMode('text')">文章</button>
+    </div>
     <span id="adminBadge">ADMIN</span>
     <button class="btn" id="adminToggleBtn" onclick="openPasswordModal()">管理者</button>
   </div>
@@ -95,6 +125,7 @@
 <main>
   <div class="artist-tabs" id="artistTabs"></div>
   <div id="gallery"><div class="empty-state">読み込み中...</div></div>
+  <div id="textList"></div>
   <div class="pagination" id="pagination" style="display:none">
     <button id="prevBtn" onclick="changePage(-1)">←</button>
     <span id="pageInfo"></span>
@@ -121,7 +152,7 @@
   </div>
 </div>
 
-<!-- 詳細モーダル -->
+<!-- 画像詳細モーダル -->
 <div class="modal-bg" id="detailModal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('detailModal')">×</button>
@@ -139,19 +170,32 @@
   </div>
 </div>
 
+<!-- テキスト詳細モーダル -->
+<div class="modal-bg" id="textModal">
+  <div class="modal" id="textModalInner">
+    <button class="modal-close" onclick="closeModal('textModal')">×</button>
+    <h2 id="textTitle"></h2>
+    <div class="text-meta-row" id="textMetaRow"></div>
+    <div id="textContent"></div>
+    <div class="detail-actions" style="margin-top:20px">
+      <button class="btn danger" id="textDeleteBtn" style="display:none" onclick="deleteTextFromModal()">✕ 削除</button>
+    </div>
+  </div>
+</div>
+
 <!-- ZIPアップロードモーダル -->
 <div class="modal-bg" id="uploadModal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('uploadModal')">×</button>
-    <h2>ZIP アップロード</h2>
+    <h2 id="uploadModalTitle">ZIP アップロード</h2>
     <div class="field">
-      <label>絵師名</label>
-      <input type="text" id="artistNameInput" placeholder="絵師名を入力" autocomplete="off">
+      <label id="authorLabel">絵師名</label>
+      <input type="text" id="authorNameInput" placeholder="名前を入力" autocomplete="off">
     </div>
     <div class="upload-area" onclick="document.getElementById('zipInput').click()">
       <input type="file" id="zipInput" accept=".zip" onchange="handleZipSelect(event)">
       <div class="up-label" id="zipLabel">タップして ZIP を選択</div>
-      <div class="up-sub">jpg / png / gif / webp のみ展開</div>
+      <div class="up-sub" id="zipSub">jpg / png / gif / webp のみ展開</div>
     </div>
     <div class="progress-wrap" id="progressWrap">
       <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
@@ -176,124 +220,130 @@ const firebaseConfig = {
   messagingSenderId: "63278356738",
   appId: "1:63278356738:web:4f24d94be393ea47a34a1b"
 };
-
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 
-const CLOUD_NAME = 'dzpzihivg';
-const API_KEY_CLD = '862345446972147';
-const API_SECRET_CLD = 'xnNTr_L3nFKyMxXjWciuhnwYxzw';
-const PASS = '0430';
-const PAGE_SIZE = 60;
+const CLOUD_NAME='dzpzihivg', API_KEY_CLD='862345446972147', API_SECRET_CLD='xnNTr_L3nFKyMxXjWciuhnwYxzw';
+const PASS='0430', PAGE_SIZE=60;
 
-let isAdmin = false;
-let items = [];
-let artists = [];
-let currentArtist = 'all';
-let currentPage = 0;
-let selectedZipFile = null;
-let currentDetailItem = null;
+let isAdmin=false, mode='image'; // 'image' or 'text'
+let items=[], texts=[], artists=[], textAuthors=[];
+let currentArtist='all', currentPage=0;
+let selectedZipFile=null, currentDetailItem=null, currentTextItem=null;
 
-// Cloudinary
+// ── Cloudinary ──
 async function cloudinaryUpload(blob, filename) {
-  const timestamp = Math.round(Date.now()/1000);
-  const folder = 'gallery';
-  const str = `folder=${folder}&timestamp=${timestamp}${API_SECRET_CLD}`;
-  const buf = await crypto.subtle.digest('SHA-1', new TextEncoder().encode(str));
-  const sig = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-  const fd = new FormData();
-  fd.append('file', blob, filename);
-  fd.append('api_key', API_KEY_CLD);
-  fd.append('timestamp', timestamp);
-  fd.append('folder', folder);
-  fd.append('signature', sig);
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {method:'POST',body:fd});
-  if (!res.ok) { const e=await res.json(); throw new Error(e.error?.message||'Upload failed'); }
-  const data = await res.json();
-  return { url: data.secure_url, publicId: data.public_id };
+  const ts=Math.round(Date.now()/1000), folder='gallery';
+  const str=`folder=${folder}&timestamp=${ts}${API_SECRET_CLD}`;
+  const buf=await crypto.subtle.digest('SHA-1',new TextEncoder().encode(str));
+  const sig=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  const fd=new FormData();
+  fd.append('file',blob,filename); fd.append('api_key',API_KEY_CLD);
+  fd.append('timestamp',ts); fd.append('folder',folder); fd.append('signature',sig);
+  const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
+  if(!res.ok){const e=await res.json();throw new Error(e.error?.message||'Upload failed');}
+  const d=await res.json(); return {url:d.secure_url,publicId:d.public_id};
 }
-
 async function cloudinaryDelete(publicId) {
-  const timestamp = Math.round(Date.now()/1000);
-  const str = `public_id=${publicId}&timestamp=${timestamp}${API_SECRET_CLD}`;
-  const buf = await crypto.subtle.digest('SHA-1', new TextEncoder().encode(str));
-  const sig = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-  const fd = new FormData();
-  fd.append('public_id', publicId); fd.append('timestamp', timestamp);
-  fd.append('api_key', API_KEY_CLD); fd.append('signature', sig);
-  await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/destroy`, {method:'POST',body:fd});
+  const ts=Math.round(Date.now()/1000);
+  const str=`public_id=${publicId}&timestamp=${ts}${API_SECRET_CLD}`;
+  const buf=await crypto.subtle.digest('SHA-1',new TextEncoder().encode(str));
+  const sig=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  const fd=new FormData();
+  fd.append('public_id',publicId); fd.append('timestamp',ts); fd.append('api_key',API_KEY_CLD); fd.append('signature',sig);
+  await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/destroy`,{method:'POST',body:fd});
 }
 
-// 絵師を名前で検索 or 作成
-async function getOrCreateArtist(name) {
-  const trimmed = name.trim();
-  // 既存を検索
-  const q = query(collection(db,'artists'), where('name','==',trimmed));
-  const snap = await getDocs(q);
-  if (!snap.empty) return snap.docs[0].id;
-  // なければ作成
-  const ref = await addDoc(collection(db,'artists'), { name: trimmed });
+// ── 作者/絵師 共通取得orCreate ──
+async function getOrCreate(collName, name) {
+  const snap=await getDocs(query(collection(db,collName),where('name','==',name.trim())));
+  if(!snap.empty) return snap.docs[0].id;
+  const ref=await addDoc(collection(db,collName),{name:name.trim()});
   return ref.id;
 }
 
+// ── 初期化 ──
 async function init() {
-  await loadArtists();
-  await loadItems();
+  await Promise.all([loadArtists(), loadTextAuthors()]);
+  await Promise.all([loadItems(), loadTexts()]);
 }
 
+// ── 絵師 ──
 async function loadArtists() {
-  const snap = await getDocs(query(collection(db,'artists'), orderBy('name')));
-  artists = snap.docs.map(d=>({id:d.id,...d.data()}));
-  renderTabs();
+  const snap=await getDocs(query(collection(db,'artists'),orderBy('name')));
+  artists=snap.docs.map(d=>({id:d.id,...d.data()}));
+}
+async function loadTextAuthors() {
+  const snap=await getDocs(query(collection(db,'textAuthors'),orderBy('name')));
+  textAuthors=snap.docs.map(d=>({id:d.id,...d.data()}));
 }
 
 function renderTabs() {
-  const tabs = document.getElementById('artistTabs');
-  tabs.innerHTML = '';
-  const allTab = document.createElement('button');
-  allTab.className = 'tab'+(currentArtist==='all'?' active':'');
-  allTab.textContent = 'ALL';
-  allTab.onclick = ()=>selectArtist('all');
-  tabs.appendChild(allTab);
-  artists.forEach(a=>{
-    const t = document.createElement('button');
-    t.className = 'tab'+(currentArtist===a.id?' active':'');
-    t.textContent = a.name;
-    t.onclick = ()=>selectArtist(a.id);
+  const tabs=document.getElementById('artistTabs');
+  tabs.innerHTML='';
+  const list=mode==='image'?artists:textAuthors;
+  const all=document.createElement('button');
+  all.className='tab'+(currentArtist==='all'?' active':'');
+  all.textContent='ALL'; all.onclick=()=>selectArtist('all');
+  tabs.appendChild(all);
+  list.forEach(a=>{
+    const t=document.createElement('button');
+    t.className='tab'+(currentArtist===a.id?' active':'');
+    t.textContent=a.name; t.onclick=()=>selectArtist(a.id);
     tabs.appendChild(t);
   });
 }
 
-function selectArtist(id) { currentArtist=id; currentPage=0; renderTabs(); render(); }
+function selectArtist(id){currentArtist=id;currentPage=0;renderTabs();renderCurrent();}
 
+// ── モード切り替え ──
+window.switchMode = function(m) {
+  mode=m; currentArtist='all'; currentPage=0;
+  document.getElementById('modeImg').classList.toggle('active',m==='image');
+  document.getElementById('modeTxt').classList.toggle('active',m==='text');
+  document.getElementById('gallery').style.display=m==='image'?'grid':'none';
+  document.getElementById('textList').style.display=m==='text'?'flex':'none';
+  // アップロードボタンのラベル変更
+  if(m==='text'){
+    document.getElementById('uploadModalTitle') && (document.getElementById('uploadModalTitle').textContent='ZIP アップロード（文章）');
+    document.getElementById('authorLabel') && (document.getElementById('authorLabel').textContent='作者名');
+    document.getElementById('zipSub') && (document.getElementById('zipSub').textContent='.txt のみ展開');
+  } else {
+    document.getElementById('uploadModalTitle') && (document.getElementById('uploadModalTitle').textContent='ZIP アップロード');
+    document.getElementById('authorLabel') && (document.getElementById('authorLabel').textContent='絵師名');
+    document.getElementById('zipSub') && (document.getElementById('zipSub').textContent='jpg / png / gif / webp のみ展開');
+  }
+  renderTabs(); renderCurrent();
+};
+
+function renderCurrent(){mode==='image'?render():renderTexts();}
+
+// ── 画像 ──
 async function loadItems() {
   try {
-    const snap = await getDocs(query(collection(db,'artworks'), orderBy('date','desc')));
-    items = snap.docs.map(d=>({id:d.id,...d.data()}));
-  } catch(e) { console.error(e); items=[]; }
-  render();
+    const snap=await getDocs(query(collection(db,'artworks'),orderBy('date','desc')));
+    items=snap.docs.map(d=>({id:d.id,...d.data()}));
+  } catch(e){console.error(e);items=[];}
 }
-
-function getFiltered() { return currentArtist==='all'?items:items.filter(i=>i.artistId===currentArtist); }
+function getFiltered(){return currentArtist==='all'?items:items.filter(i=>i.artistId===currentArtist);}
 
 function render() {
-  const g = document.getElementById('gallery');
-  const filtered = getFiltered();
-  const total = Math.ceil(filtered.length/PAGE_SIZE);
-  const pag = document.getElementById('pagination');
-  if (total>1) {
+  const g=document.getElementById('gallery');
+  g.style.display='grid';
+  document.getElementById('textList').style.display='none';
+  const filtered=getFiltered();
+  const total=Math.ceil(filtered.length/PAGE_SIZE);
+  const pag=document.getElementById('pagination');
+  if(total>1){
     pag.style.display='flex';
     document.getElementById('pageInfo').textContent=`${currentPage+1} / ${total}`;
     document.getElementById('prevBtn').disabled=currentPage===0;
     document.getElementById('nextBtn').disabled=currentPage>=total-1;
   } else pag.style.display='none';
-  if (!filtered.length) {
-    g.innerHTML=`<div class="empty-state">${!items.length?'まだ作品がありません':'この絵師の作品はありません'}</div>`;
-    return;
-  }
-  const paged = filtered.slice(currentPage*PAGE_SIZE,(currentPage+1)*PAGE_SIZE);
+  if(!filtered.length){g.innerHTML=`<div class="empty-state">${!items.length?'まだ作品がありません':'この絵師の作品はありません'}</div>`;return;}
+  const paged=filtered.slice(currentPage*PAGE_SIZE,(currentPage+1)*PAGE_SIZE);
   const amap={}; artists.forEach(a=>amap[a.id]=a.name);
-  g.innerHTML = paged.map(item=>`
+  g.innerHTML=paged.map(item=>`
     <div class="card" onclick="window.__openDetail('${item.id}')">
       <img src="${item.imageUrl}" alt="" loading="lazy">
       <div class="card-overlay">
@@ -304,13 +354,13 @@ function render() {
     </div>`).join('');
 }
 
-window.changePage = function(dir) {
-  const total=Math.ceil(getFiltered().length/PAGE_SIZE);
+window.changePage=function(dir){
+  const total=Math.ceil((mode==='image'?getFiltered():getFilteredTexts()).length/PAGE_SIZE);
   currentPage=Math.max(0,Math.min(currentPage+dir,total-1));
-  render(); window.scrollTo({top:0,behavior:'smooth'});
+  renderCurrent(); window.scrollTo({top:0,behavior:'smooth'});
 };
 
-window.__openDetail = function(id) {
+window.__openDetail=function(id){
   const item=items.find(i=>i.id===id); if(!item) return;
   currentDetailItem=item;
   const amap={}; artists.forEach(a=>amap[a.id]=a.name);
@@ -320,125 +370,181 @@ window.__openDetail = function(id) {
   document.getElementById('detailDeleteBtn').style.display=isAdmin?'inline-block':'none';
   openModal('detailModal');
 };
-
-window.downloadDetail = function() {
-  if (!currentDetailItem?.imageUrl) return;
-  const a=document.createElement('a'); a.href=currentDetailItem.imageUrl;
-  a.download=currentDetailItem.filename||'image'; a.target='_blank'; a.click();
+window.downloadDetail=function(){
+  if(!currentDetailItem?.imageUrl) return;
+  const a=document.createElement('a'); a.href=currentDetailItem.imageUrl; a.download=currentDetailItem.filename||'image'; a.target='_blank'; a.click();
+};
+window.deleteFromDetail=async function(){
+  if(!currentDetailItem) return;
+  await window.__deleteItem(currentDetailItem.id); closeModal('detailModal');
+};
+window.__deleteItem=async function(id){
+  if(!confirm('この作品を削除しますか？')) return;
+  const item=items.find(i=>i.id===id); setSaving(true);
+  try{if(item?.publicId) await cloudinaryDelete(item.publicId); await deleteDoc(doc(db,'artworks',id)); await loadItems(); render();}
+  catch(e){alert('削除に失敗: '+e.message);}finally{setSaving(false);}
 };
 
-window.deleteFromDetail = async function() {
-  if (!currentDetailItem) return;
-  await window.__deleteItem(currentDetailItem.id);
-  closeModal('detailModal');
-};
-
-window.__deleteItem = async function(id) {
-  if (!confirm('この作品を削除しますか？')) return;
-  const item=items.find(i=>i.id===id);
-  setSaving(true);
+// ── テキスト ──
+async function loadTexts() {
   try {
-    if (item?.publicId) await cloudinaryDelete(item.publicId);
-    await deleteDoc(doc(db,'artworks',id));
-    await loadItems();
-  } catch(e) { alert('削除に失敗しました: '+e.message); }
-  finally { setSaving(false); }
+    const snap=await getDocs(query(collection(db,'texts'),orderBy('date','desc')));
+    texts=snap.docs.map(d=>({id:d.id,...d.data()}));
+  } catch(e){console.error(e);texts=[];}
+}
+function getFilteredTexts(){return currentArtist==='all'?texts:texts.filter(t=>t.authorId===currentArtist);}
+
+function renderTexts() {
+  document.getElementById('gallery').style.display='none';
+  const tl=document.getElementById('textList');
+  tl.style.display='flex';
+  const filtered=getFilteredTexts();
+  const total=Math.ceil(filtered.length/PAGE_SIZE);
+  const pag=document.getElementById('pagination');
+  if(total>1){
+    pag.style.display='flex';
+    document.getElementById('pageInfo').textContent=`${currentPage+1} / ${total}`;
+    document.getElementById('prevBtn').disabled=currentPage===0;
+    document.getElementById('nextBtn').disabled=currentPage>=total-1;
+  } else pag.style.display='none';
+  if(!filtered.length){tl.innerHTML=`<div class="empty-state">${!texts.length?'まだ文章がありません':'この作者の文章はありません'}</div>`;return;}
+  const paged=filtered.slice(currentPage*PAGE_SIZE,(currentPage+1)*PAGE_SIZE);
+  const amap={}; textAuthors.forEach(a=>amap[a.id]=a.name);
+  tl.innerHTML=paged.map(item=>`
+    <div class="text-card" onclick="window.__openText('${item.id}')">
+      ${isAdmin?`<button class="text-card-admin" onclick="event.stopPropagation();window.__deleteText('${item.id}')">✕</button>`:''}
+      <div class="text-card-title">${item.title||item.filename||'無題'}</div>
+      <div class="text-card-meta">${amap[item.authorId]||''}${item.date?' · '+item.date:''}</div>
+    </div>`).join('');
+}
+
+window.__openText=function(id){
+  const item=texts.find(t=>t.id===id); if(!item) return;
+  currentTextItem=item;
+  const amap={}; textAuthors.forEach(a=>amap[a.id]=a.name);
+  document.getElementById('textTitle').textContent=item.title||item.filename||'無題';
+  document.getElementById('textMetaRow').textContent=(amap[item.authorId]||'')+(item.date?' · '+item.date:'');
+  document.getElementById('textContent').textContent=item.content||'';
+  document.getElementById('textDeleteBtn').style.display=isAdmin?'inline-block':'none';
+  openModal('textModal');
+};
+window.deleteTextFromModal=async function(){
+  if(!currentTextItem) return;
+  await window.__deleteText(currentTextItem.id); closeModal('textModal');
+};
+window.__deleteText=async function(id){
+  if(!confirm('この文章を削除しますか？')) return;
+  setSaving(true);
+  try{await deleteDoc(doc(db,'texts',id)); await loadTexts(); renderTexts();}
+  catch(e){alert('削除に失敗: '+e.message);}finally{setSaving(false);}
 };
 
-window.openUploadModal = function() {
+// ── アップロード ──
+window.openUploadModal=function(){
   selectedZipFile=null;
-  document.getElementById('artistNameInput').value='';
+  document.getElementById('authorNameInput').value='';
   document.getElementById('zipLabel').textContent='タップして ZIP を選択';
   document.getElementById('zipInput').value='';
   document.getElementById('progressWrap').style.display='none';
   document.getElementById('progressFill').style.width='0%';
   document.getElementById('progressText').textContent='';
   document.getElementById('uploadBtn').disabled=false;
+  // ラベル更新
+  document.getElementById('uploadModalTitle').textContent=mode==='text'?'ZIP アップロード（文章）':'ZIP アップロード';
+  document.getElementById('authorLabel').textContent=mode==='text'?'作者名':'絵師名';
+  document.getElementById('zipSub').textContent=mode==='text'?'.txt のみ展開':'jpg / png / gif / webp のみ展開';
   openModal('uploadModal');
 };
-
-window.handleZipSelect = function(e) {
+window.handleZipSelect=function(e){
   const f=e.target.files[0]; if(!f) return;
-  selectedZipFile=f;
-  document.getElementById('zipLabel').textContent=`✓ ${f.name}`;
+  selectedZipFile=f; document.getElementById('zipLabel').textContent=`✓ ${f.name}`;
 };
 
-window.startUpload = async function() {
-  const artistName = document.getElementById('artistNameInput').value.trim();
-  if (!artistName) { alert('絵師名を入力してください'); return; }
-  if (!selectedZipFile) { alert('ZIPファイルを選択してください'); return; }
+window.startUpload=async function(){
+  const authorName=document.getElementById('authorNameInput').value.trim();
+  if(!authorName){alert('名前を入力してください');return;}
+  if(!selectedZipFile){alert('ZIPファイルを選択してください');return;}
 
-  const EXT_RE=/\.(jpe?g|png|gif|webp)$/i;
   document.getElementById('uploadBtn').disabled=true;
   document.getElementById('progressWrap').style.display='block';
-  document.getElementById('progressText').textContent='絵師情報を確認中...';
+  document.getElementById('progressText').textContent='確認中...';
 
-  // 絵師IDを取得or作成
-  let artistId;
-  try { artistId = await getOrCreateArtist(artistName); }
-  catch(e) { alert('絵師の登録に失敗しました: '+e.message); document.getElementById('uploadBtn').disabled=false; return; }
-
-  let zip;
-  try { zip=await JSZip.loadAsync(selectedZipFile); }
-  catch(e) { alert('ZIPの読み込みに失敗: '+e.message); document.getElementById('uploadBtn').disabled=false; return; }
-
-  const files=[];
-  zip.forEach((path,entry)=>{
-    if(entry.dir||path.startsWith('__MACOSX')) return;
-    const name=path.split('/').pop();
-    if(EXT_RE.test(name)) files.push({entry,name});
-  });
-
-  if (!files.length) { alert('画像ファイルが見つかりませんでした'); document.getElementById('uploadBtn').disabled=false; return; }
-
-  let done=0; const total=files.length;
-  for (const {entry,name} of files) {
-    try {
-      const dateStr=entry.date?new Date(entry.date).toISOString().split('T')[0]:'';
-      const blob=await entry.async('blob');
-      const {url,publicId}=await cloudinaryUpload(blob,name);
-      await addDoc(collection(db,'artworks'),{imageUrl:url,publicId,filename:name,date:dateStr,artistId});
-      done++;
-      document.getElementById('progressFill').style.width=Math.round(done/total*100)+'%';
-      document.getElementById('progressText').textContent=`${done} / ${total} 枚完了`;
-    } catch(e) { console.error(name,e); }
+  if(mode==='image'){
+    // 画像アップロード
+    let artistId;
+    try{artistId=await getOrCreate('artists',authorName);}
+    catch(e){alert('絵師登録失敗: '+e.message);document.getElementById('uploadBtn').disabled=false;return;}
+    const EXT_RE=/\.(jpe?g|png|gif|webp)$/i;
+    let zip; try{zip=await JSZip.loadAsync(selectedZipFile);}catch(e){alert('ZIP読み込み失敗: '+e.message);document.getElementById('uploadBtn').disabled=false;return;}
+    const files=[]; zip.forEach((path,entry)=>{if(entry.dir||path.startsWith('__MACOSX'))return;const name=path.split('/').pop();if(EXT_RE.test(name))files.push({entry,name});});
+    if(!files.length){alert('画像ファイルが見つかりませんでした');document.getElementById('uploadBtn').disabled=false;return;}
+    let done=0; const total=files.length;
+    for(const {entry,name} of files){
+      try{
+        const dateStr=entry.date?new Date(entry.date).toISOString().split('T')[0]:'';
+        const blob=await entry.async('blob');
+        const {url,publicId}=await cloudinaryUpload(blob,name);
+        await addDoc(collection(db,'artworks'),{imageUrl:url,publicId,filename:name,date:dateStr,artistId});
+        done++; document.getElementById('progressFill').style.width=Math.round(done/total*100)+'%';
+        document.getElementById('progressText').textContent=`${done} / ${total} 枚完了`;
+      }catch(e){console.error(name,e);}
+    }
+    document.getElementById('progressText').textContent=`完了！ ${done}枚`;
+    await loadArtists(); await loadItems();
+  } else {
+    // テキストアップロード
+    let authorId;
+    try{authorId=await getOrCreate('textAuthors',authorName);}
+    catch(e){alert('作者登録失敗: '+e.message);document.getElementById('uploadBtn').disabled=false;return;}
+    let zip; try{zip=await JSZip.loadAsync(selectedZipFile);}catch(e){alert('ZIP読み込み失敗: '+e.message);document.getElementById('uploadBtn').disabled=false;return;}
+    const files=[]; zip.forEach((path,entry)=>{if(entry.dir||path.startsWith('__MACOSX'))return;const name=path.split('/').pop();if(/\.txt$/i.test(name))files.push({entry,name});});
+    if(!files.length){alert('.txtファイルが見つかりませんでした');document.getElementById('uploadBtn').disabled=false;return;}
+    let done=0; const total=files.length;
+    for(const {entry,name} of files){
+      try{
+        const dateStr=entry.date?new Date(entry.date).toISOString().split('T')[0]:'';
+        const content=await entry.async('string');
+        const title=name.replace(/\.txt$/i,'').replace(/^[\d\s年月日_:\-\/]+/,'').trim();
+        await addDoc(collection(db,'texts'),{title,filename:name,content,date:dateStr,authorId});
+        done++; document.getElementById('progressFill').style.width=Math.round(done/total*100)+'%';
+        document.getElementById('progressText').textContent=`${done} / ${total} 件完了`;
+      }catch(e){console.error(name,e);}
+    }
+    document.getElementById('progressText').textContent=`完了！ ${done}件`;
+    await loadTextAuthors(); await loadTexts();
   }
-
-  document.getElementById('progressText').textContent=`完了！ ${done}枚アップロードしました`;
-  await loadArtists();
-  await loadItems();
+  renderTabs(); renderCurrent();
   setTimeout(()=>closeModal('uploadModal'),1400);
 };
 
-window.openPasswordModal = function() {
-  if (isAdmin) { logout(); return; }
+// ── 認証 ──
+window.openPasswordModal=function(){
+  if(isAdmin){logout();return;}
   document.getElementById('pwInput').value='';
   document.getElementById('pwError').style.display='none';
   openModal('pwModal');
   setTimeout(()=>document.getElementById('pwInput').focus(),300);
 };
-
-window.checkPw = function() {
-  if (document.getElementById('pwInput').value===PASS) {
+window.checkPw=function(){
+  if(document.getElementById('pwInput').value===PASS){
     isAdmin=true; closeModal('pwModal');
     document.getElementById('adminBadge').style.display='inline';
     document.getElementById('adminToggleBtn').textContent='ログアウト';
     document.getElementById('addBtn').style.display='block';
     document.getElementById('gallery').classList.add('is-admin');
-    render();
+    renderCurrent();
   } else {
     document.getElementById('pwError').style.display='block';
     document.getElementById('pwInput').value='';
   }
 };
-
-function logout() {
+function logout(){
   isAdmin=false;
   document.getElementById('adminBadge').style.display='none';
   document.getElementById('adminToggleBtn').textContent='管理者';
   document.getElementById('addBtn').style.display='none';
   document.getElementById('gallery').classList.remove('is-admin');
-  render();
+  renderCurrent();
 }
 
 function setSaving(on){document.getElementById('saveStatus').style.display=on?'inline':'none';}
@@ -446,14 +552,14 @@ function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 window.openModal=openModal; window.closeModal=closeModal;
 
-document.querySelectorAll('.modal-bg').forEach(bg=>{
-  bg.addEventListener('click',e=>{if(e.target===bg)bg.classList.remove('open');});
-});
-
-// キーボードイベント
+document.querySelectorAll('.modal-bg').forEach(bg=>{bg.addEventListener('click',e=>{if(e.target===bg)bg.classList.remove('open');});});
 document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='Enter')window.checkPw();});
 
-init();
+// 初期表示は画像モード
+document.getElementById('gallery').style.display='grid';
+document.getElementById('textList').style.display='none';
+
+init().then(()=>{renderTabs();render();});
 </script>
 </body>
 </html>
