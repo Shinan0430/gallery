@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -227,12 +226,12 @@ const db = getFirestore(firebaseApp);
 const CLOUD_NAME='dzpzihivg', API_KEY_CLD='862345446972147', API_SECRET_CLD='xnNTr_L3nFKyMxXjWciuhnwYxzw';
 const PASS='0430', PAGE_SIZE=60;
 
-let isAdmin=false, mode='image';
+let isAdmin=false, mode='image'; // 'image' or 'text'
 let items=[], texts=[], artists=[], textAuthors=[];
 let currentArtist='all', currentPage=0;
 let selectedZipFile=null, currentDetailItem=null, currentTextItem=null;
 
-// Cloudinary
+// ── Cloudinary ──
 async function cloudinaryUpload(blob, filename) {
   const ts=Math.round(Date.now()/1000), folder='gallery';
   const str=`folder=${folder}&timestamp=${ts}${API_SECRET_CLD}`;
@@ -255,7 +254,7 @@ async function cloudinaryDelete(publicId) {
   await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/destroy`,{method:'POST',body:fd});
 }
 
-// 作者/絵師 共通
+// ── 作者/絵師 共通取得orCreate ──
 async function getOrCreate(collName, name) {
   const snap=await getDocs(query(collection(db,collName),where('name','==',name.trim())));
   if(!snap.empty) return snap.docs[0].id;
@@ -263,13 +262,13 @@ async function getOrCreate(collName, name) {
   return ref.id;
 }
 
-// 初期化
+// ── 初期化 ──
 async function init() {
   await Promise.all([loadArtists(), loadTextAuthors()]);
   await Promise.all([loadItems(), loadTexts()]);
 }
 
-// 絵師
+// ── 絵師 ──
 async function loadArtists() {
   const snap=await getDocs(query(collection(db,'artists'),orderBy('name')));
   artists=snap.docs.map(d=>({id:d.id,...d.data()}));
@@ -297,13 +296,14 @@ function renderTabs() {
 
 function selectArtist(id){currentArtist=id;currentPage=0;renderTabs();renderCurrent();}
 
-// モード切り替え
+// ── モード切り替え ──
 window.switchMode = function(m) {
   mode=m; currentArtist='all'; currentPage=0;
   document.getElementById('modeImg').classList.toggle('active',m==='image');
   document.getElementById('modeTxt').classList.toggle('active',m==='text');
   document.getElementById('gallery').style.display=m==='image'?'grid':'none';
   document.getElementById('textList').style.display=m==='text'?'flex':'none';
+  // アップロードボタンのラベル変更
   if(m==='text'){
     document.getElementById('uploadModalTitle') && (document.getElementById('uploadModalTitle').textContent='ZIP アップロード（文章）');
     document.getElementById('authorLabel') && (document.getElementById('authorLabel').textContent='作者名');
@@ -318,7 +318,7 @@ window.switchMode = function(m) {
 
 function renderCurrent(){mode==='image'?render():renderTexts();}
 
-// 画像
+// ── 画像 ──
 async function loadItems() {
   try {
     const snap=await getDocs(query(collection(db,'artworks'),orderBy('date','desc')));
@@ -385,7 +385,7 @@ window.__deleteItem=async function(id){
   catch(e){alert('削除に失敗: '+e.message);}finally{setSaving(false);}
 };
 
-// テキスト
+// ── テキスト ──
 async function loadTexts() {
   try {
     const snap=await getDocs(query(collection(db,'texts'),orderBy('date','desc')));
@@ -439,29 +439,7 @@ window.__deleteText=async function(id){
   catch(e){alert('削除に失敗: '+e.message);}finally{setSaving(false);}
 };
 
-// ファイル名から日付を抽出
-function extractDateFromFilename(filename) {
-  const nameWithoutExt = filename.replace(/\.txt$/i, '');
-  // 日本語: 2025年1月26日 または 2025年01月26日
-  const jpMatch = nameWithoutExt.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
-  if (jpMatch) {
-    const year = jpMatch[1];
-    const month = jpMatch[2].padStart(2, '0');
-    const day = jpMatch[3].padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
-  // 半角: 2025-01-26 または 2025/01/26
-  const engMatch = nameWithoutExt.match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
-  if (engMatch) {
-    const year = engMatch[1];
-    const month = engMatch[2].padStart(2, '0');
-    const day = engMatch[3].padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
-  return null;
-}
-
-// アップロード
+// ── アップロード ──
 window.openUploadModal=function(){
   selectedZipFile=null;
   document.getElementById('authorNameInput').value='';
@@ -471,6 +449,7 @@ window.openUploadModal=function(){
   document.getElementById('progressFill').style.width='0%';
   document.getElementById('progressText').textContent='';
   document.getElementById('uploadBtn').disabled=false;
+  // ラベル更新
   document.getElementById('uploadModalTitle').textContent=mode==='text'?'ZIP アップロード（文章）':'ZIP アップロード';
   document.getElementById('authorLabel').textContent=mode==='text'?'作者名':'絵師名';
   document.getElementById('zipSub').textContent=mode==='text'?'.txt のみ展開':'jpg / png / gif / webp のみ展開';
@@ -491,7 +470,7 @@ window.startUpload=async function(){
   document.getElementById('progressText').textContent='確認中...';
 
   if(mode==='image'){
-    // 画像アップロード (日付はZIP内の更新日時を使う)
+    // 画像アップロード
     let artistId;
     try{artistId=await getOrCreate('artists',authorName);}
     catch(e){alert('絵師登録失敗: '+e.message);document.getElementById('uploadBtn').disabled=false;return;}
@@ -502,7 +481,7 @@ window.startUpload=async function(){
     let done=0; const total=files.length;
     for(const {entry,name} of files){
       try{
-        const dateStr=entry.date ? new Date(entry.date).toISOString().split('T')[0] : '';
+        const dateStr=entry.date?new Date(entry.date).toISOString().split('T')[0]:'';
         const blob=await entry.async('blob');
         const {url,publicId}=await cloudinaryUpload(blob,name);
         await addDoc(collection(db,'artworks'),{imageUrl:url,publicId,filename:name,date:dateStr,artistId});
@@ -513,7 +492,7 @@ window.startUpload=async function(){
     document.getElementById('progressText').textContent=`完了！ ${done}枚`;
     await loadArtists(); await loadItems();
   } else {
-    // テキストアップロード (ファイル名から日付を抽出)
+    // テキストアップロード
     let authorId;
     try{authorId=await getOrCreate('textAuthors',authorName);}
     catch(e){alert('作者登録失敗: '+e.message);document.getElementById('uploadBtn').disabled=false;return;}
@@ -523,12 +502,7 @@ window.startUpload=async function(){
     let done=0; const total=files.length;
     for(const {entry,name} of files){
       try{
-        // ファイル名から日付を抽出
-        let dateStr = extractDateFromFilename(name);
-        // 見つからなければZIP内の日時を使う
-        if(!dateStr && entry.date) {
-          dateStr = new Date(entry.date).toISOString().split('T')[0];
-        }
+        const dateStr=(()=>{const m=name.match(/(\d{4})[^\d]?(\d{1,2})[^\d](\d{1,2})/);return m?`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`:entry.date?new Date(entry.date).toISOString().split('T')[0]:'';})();
         const content=await entry.async('string');
         const title=name.replace(/\.txt$/i,'').replace(/^[\d\s年月日_:\-\/]+/,'').trim();
         await addDoc(collection(db,'texts'),{title,filename:name,content,date:dateStr,authorId});
@@ -543,7 +517,7 @@ window.startUpload=async function(){
   setTimeout(()=>closeModal('uploadModal'),1400);
 };
 
-// 認証
+// ── 認証 ──
 window.openPasswordModal=function(){
   if(isAdmin){logout();return;}
   document.getElementById('pwInput').value='';
@@ -581,6 +555,7 @@ window.openModal=openModal; window.closeModal=closeModal;
 document.querySelectorAll('.modal-bg').forEach(bg=>{bg.addEventListener('click',e=>{if(e.target===bg)bg.classList.remove('open');});});
 document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='Enter')window.checkPw();});
 
+// 初期表示は画像モード
 document.getElementById('gallery').style.display='grid';
 document.getElementById('textList').style.display='none';
 
@@ -588,4 +563,3 @@ init().then(()=>{renderTabs();render();});
 </script>
 </body>
 </html>
-```
